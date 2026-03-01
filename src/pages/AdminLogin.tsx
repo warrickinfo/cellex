@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Lock, User, ArrowRight } from 'lucide-react';
+import { Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from '../store';
 import { toast } from 'sonner';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 export const AdminLogin = () => {
   const [adminId, setAdminId] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
   const { setUser } = useAuthStore();
   const { findUser } = useUserStore();
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export const AdminLogin = () => {
       toast.success(`Welcome to Admin Portal, ${user.name}!`);
       navigate('/admin');
     } else {
-      toast.error('Invalid Admin ID or Password');
+      toast.error('Invalid Admin ID or Password. Hint: arvin_hanif / arvin_hanif');
     }
   };
 
@@ -61,16 +62,23 @@ export const AdminLogin = () => {
 
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-widest text-black/60 ml-1">Password</label>
-              <div className="bg-black/5 rounded-2xl flex items-center px-4 py-3 group focus-within:border-[#ff6b00]/50 transition-all border border-transparent">
+              <div className="bg-black/5 rounded-2xl flex items-center px-4 py-3 group focus-within:border-[#ff6b00]/50 transition-all border border-transparent relative">
                 <Lock size={18} className="text-black/30 group-focus-within:text-[#ff6b00]" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="arvin_hanif"
                   className="bg-transparent border-none outline-none px-3 py-1 text-sm w-full text-black placeholder:text-black/20"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 text-black/30 hover:text-black transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -85,7 +93,12 @@ export const AdminLogin = () => {
             </motion.button>
           </form>
           
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center space-y-4">
+            <div className="p-4 bg-black/5 rounded-2xl border border-black/10">
+              <p className="text-[10px] uppercase tracking-widest font-bold text-black/40 mb-1">Admin Credentials</p>
+              <p className="text-sm font-mono text-black">ID: arvin_hanif</p>
+              <p className="text-sm font-mono text-black">Pass: arvin_hanif</p>
+            </div>
             <button 
               onClick={() => navigate('/login')}
               className="text-xs text-black/40 hover:text-black transition-colors font-medium"
