@@ -73,10 +73,14 @@ export const useCartStore = create<CartStore>()(
   )
 );
 
-interface User {
+export interface User {
   id: string;
+  name: string;
   email: string;
+  phone: string;
+  password?: string;
   role: 'user' | 'admin';
+  createdAt: string;
 }
 
 interface AuthStore {
@@ -85,11 +89,57 @@ interface AuthStore {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-  logout: () => set({ user: null }),
-}));
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+      logout: () => set({ user: null }),
+    }),
+    {
+      name: 'cellex-auth',
+    }
+  )
+);
+
+interface UserStore {
+  users: User[];
+  registerUser: (user: Omit<User, 'id' | 'createdAt' | 'role'>) => void;
+  findUser: (email: string) => User | undefined;
+}
+
+export const useUserStore = create<UserStore>()(
+  persist(
+    (set, get) => ({
+      users: [
+        {
+          id: 'admin-1',
+          name: 'Admin',
+          email: 'admin@cellex.com',
+          phone: '0000000000',
+          password: 'admin123',
+          role: 'admin',
+          createdAt: new Date().toISOString(),
+        }
+      ],
+      registerUser: (userData) => {
+        const newUser: User = {
+          ...userData,
+          id: Math.random().toString(36).substring(7),
+          role: 'user',
+          createdAt: new Date().toISOString(),
+        };
+        set({ users: [...get().users, newUser] });
+      },
+      findUser: (email) => {
+        return get().users.find((u) => u.email === email);
+      },
+    }),
+    {
+      name: 'cellex-users',
+    }
+  )
+);
 
 interface ThemeStore {
   theme: 'dark' | 'light';

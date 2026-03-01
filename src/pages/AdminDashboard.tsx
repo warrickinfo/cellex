@@ -13,13 +13,16 @@ import {
 } from 'lucide-react';
 import { formatPrice, cn } from '../lib/utils';
 import { MOCK_PRODUCTS } from '../lib/supabase';
+import { useUserStore } from '../store';
 
 export const AdminDashboard = () => {
+  const { users } = useUserStore();
+  
   const stats = [
     { label: 'Total Revenue', value: '$128,430', icon: TrendingUp, color: 'text-neon-cyan', bg: 'bg-neon-cyan/10' },
     { label: 'Total Orders', value: '1,240', icon: ShoppingBag, color: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
     { label: 'Active Products', value: '48', icon: Package, color: 'text-neon-blue', bg: 'bg-neon-blue/10' },
-    { label: 'Total Users', value: '8,420', icon: Users, color: 'text-white', bg: 'bg-white/10' },
+    { label: 'Total Users', value: users.length.toString(), icon: Users, color: 'text-white', bg: 'bg-white/10' },
   ];
 
   const recentOrders = [
@@ -68,7 +71,7 @@ export const AdminDashboard = () => {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-[1fr_400px] gap-12">
+        <div className="grid lg:grid-cols-[1fr_400px] gap-12 mb-12">
           {/* Recent Orders Table */}
           <div className="glass-morphism rounded-[3rem] overflow-hidden">
             <div className="p-8 border-b border-white/5 flex items-center justify-between">
@@ -143,19 +146,47 @@ export const AdminDashboard = () => {
                 View Inventory
               </button>
             </div>
+          </div>
+        </div>
 
-            {/* Quick Actions */}
-            <div className="glass-morphism p-8 rounded-[3rem]">
-              <h2 className="text-xl font-bold mb-6">Quick Search</h2>
-              <div className="glass-morphism rounded-2xl flex items-center px-4 py-3 group focus-within:border-neon-cyan/50 transition-all">
-                <Search size={18} className="text-white/30 group-focus-within:text-neon-cyan" />
-                <input
-                  type="text"
-                  placeholder="Search orders, users..."
-                  className="bg-transparent border-none outline-none px-3 py-1 text-sm w-full"
-                />
-              </div>
-            </div>
+        {/* Users List Section */}
+        <div className="glass-morphism rounded-[3rem] overflow-hidden">
+          <div className="p-8 border-b border-white/5 flex items-center justify-between">
+            <h2 className="text-xl font-bold">Registered Users</h2>
+            <div className="text-sm text-white/40">Total: {users.length}</div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="text-[10px] uppercase tracking-widest text-white/30 border-b border-white/5">
+                  <th className="px-8 py-4">Name</th>
+                  <th className="px-8 py-4">Email</th>
+                  <th className="px-8 py-4">Phone</th>
+                  <th className="px-8 py-4">Role</th>
+                  <th className="px-8 py-4">Joined</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {users.map((u) => (
+                  <tr key={u.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="px-8 py-6 font-bold">{u.name}</td>
+                    <td className="px-8 py-6 text-white/60">{u.email}</td>
+                    <td className="px-8 py-6 text-white/60">{u.phone}</td>
+                    <td className="px-8 py-6">
+                      <span className={cn(
+                        "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
+                        u.role === 'admin' ? "bg-neon-magenta/10 text-neon-magenta border-neon-magenta/20" : "bg-white/5 text-white/40 border-white/10"
+                      )}>
+                        {u.role}
+                      </span>
+                    </td>
+                    <td className="px-8 py-6 text-white/30 text-xs">
+                      {new Date(u.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

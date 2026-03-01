@@ -2,27 +2,31 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Mail, Lock, ArrowRight, Github, Chrome } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store';
+import { useAuthStore, useUserStore } from '../store';
 import { toast } from 'sonner';
 
 export const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const { setUser } = useAuthStore();
+  const { findUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Demo logic
-    if (email === 'admin@cellex.com' && password === 'admin123') {
-      setUser({ id: '1', email, role: 'admin' });
-      toast.success('Welcome back, Admin!');
-      navigate('/admin');
+    const user = findUser(email);
+
+    if (user && user.password === password) {
+      setUser(user);
+      toast.success(`Welcome back, ${user.name}!`);
+      if (user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     } else {
-      setUser({ id: '2', email, role: 'user' });
-      toast.success('Login successful!');
-      navigate('/');
+      toast.error('Invalid email or password');
     }
   };
 
@@ -112,7 +116,7 @@ export const Login = () => {
 
           <p className="text-center mt-10 text-sm text-white/40">
             Don't have an account?{' '}
-            <Link to="#" className="text-neon-cyan font-bold hover:underline">Create one</Link>
+            <Link to="/register" className="text-neon-cyan font-bold hover:underline">Create one</Link>
           </p>
         </div>
       </motion.div>
