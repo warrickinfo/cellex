@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Mail, Lock, ArrowRight, Github, Chrome } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore, useUserStore } from '../store';
 import { toast } from 'sonner';
@@ -28,12 +28,6 @@ export const Login = () => {
     } else {
       toast.error('Invalid email or password');
     }
-  };
-
-  const handleAdminPortal = () => {
-    setEmail('arvin_hanif');
-    setPassword('arvin_hanif');
-    toast.info('Admin credentials auto-filled. Click Sign In to enter.');
   };
 
   return (
@@ -104,33 +98,13 @@ export const Login = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
-                onClick={handleAdminPortal}
+                onClick={() => navigate('/admin/login')}
                 className="w-full py-4 rounded-2xl bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan font-bold flex items-center justify-center gap-2 group hover:bg-neon-cyan/20 transition-all"
               >
                 Admin Portal
               </motion.button>
             </div>
           </form>
-
-          <div className="relative my-10">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10"></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[#0a0a0a] px-4 text-white/30 font-bold tracking-widest">Or continue with</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <button className="glass-morphism py-3 rounded-2xl flex items-center justify-center gap-2 hover:bg-white/5 transition-all">
-              <Chrome size={18} />
-              <span className="text-sm font-bold">Google</span>
-            </button>
-            <button className="glass-morphism py-3 rounded-2xl flex items-center justify-center gap-2 hover:bg-white/5 transition-all">
-              <Github size={18} />
-              <span className="text-sm font-bold">GitHub</span>
-            </button>
-          </div>
 
           <p className="text-center mt-10 text-sm text-white/40">
             Don't have an account?{' '}

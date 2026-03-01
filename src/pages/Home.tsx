@@ -199,6 +199,7 @@ export const Home = () => {
               <li><Link to="/shop?category=Smartphones" className="hover:text-neon-cyan transition-colors">Smartphones</Link></li>
               <li><Link to="/shop?category=Laptops" className="hover:text-neon-cyan transition-colors">Laptops</Link></li>
               <li><Link to="/cart" className="hover:text-neon-cyan transition-colors">My Cart</Link></li>
+              <li><Link to="/admin/login" className="hover:text-neon-cyan transition-colors">Admin Portal</Link></li>
             </ul>
           </div>
           <div>

@@ -7,6 +7,7 @@ import { Shop } from './pages/Shop';
 import { ProductDetail } from './pages/ProductDetail';
 import { Cart } from './pages/Cart';
 import { Login } from './pages/Login';
+import { AdminLogin } from './pages/AdminLogin';
 import { Register } from './pages/Register';
 import { Account } from './pages/Account';
 import { AdminDashboard } from './pages/AdminDashboard';
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/register" element={<Register />} />
           
           {/* User Routes */}
