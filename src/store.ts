@@ -150,6 +150,49 @@ export const useUserStore = create<UserStore>()(
   )
 );
 
+export interface Order {
+  id: string;
+  userId: string;
+  userName: string;
+  items: CartItem[];
+  total: number;
+  status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered';
+  createdAt: string;
+}
+
+interface OrderStore {
+  orders: Order[];
+  addOrder: (order: Omit<Order, 'id' | 'createdAt' | 'status'>) => void;
+  updateOrderStatus: (orderId: string, status: Order['status']) => void;
+}
+
+export const useOrderStore = create<OrderStore>()(
+  persist(
+    (set, get) => ({
+      orders: [],
+      addOrder: (orderData) => {
+        const newOrder: Order = {
+          ...orderData,
+          id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+          status: 'Pending',
+          createdAt: new Date().toISOString(),
+        };
+        set({ orders: [newOrder, ...get().orders] });
+      },
+      updateOrderStatus: (orderId, status) => {
+        set({
+          orders: get().orders.map((o) =>
+            o.id === orderId ? { ...o, status } : o
+          ),
+        });
+      },
+    }),
+    {
+      name: 'cellex-orders',
+    }
+  )
+);
+
 interface ThemeStore {
   theme: 'dark' | 'light';
   toggleTheme: () => void;

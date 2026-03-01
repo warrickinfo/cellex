@@ -13,23 +13,26 @@ import {
 } from 'lucide-react';
 import { formatPrice, cn } from '../lib/utils';
 import { MOCK_PRODUCTS } from '../lib/supabase';
-import { useUserStore } from '../store';
+import { useUserStore, useOrderStore } from '../store';
 
 export const AdminDashboard = () => {
   const { users } = useUserStore();
+  const { orders } = useOrderStore();
   
+  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+
   const stats = [
-    { label: 'Total Revenue', value: '$128,430', icon: TrendingUp, color: 'text-neon-cyan', bg: 'bg-neon-cyan/10' },
-    { label: 'Total Orders', value: '1,240', icon: ShoppingBag, color: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
+    { label: 'Total Revenue', value: formatPrice(totalRevenue), icon: TrendingUp, color: 'text-neon-cyan', bg: 'bg-neon-cyan/10' },
+    { label: 'Total Orders', value: orders.length.toString(), icon: ShoppingBag, color: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
     { label: 'Active Products', value: '48', icon: Package, color: 'text-neon-blue', bg: 'bg-neon-blue/10' },
     { label: 'Total Users', value: users.length.toString(), icon: Users, color: 'text-white', bg: 'bg-white/10' },
   ];
 
-  const recentOrders = [
-    { id: '#ORD-7241', user: 'Alex Rivera', items: 2, total: 1598, status: 'Processing', date: '2 mins ago' },
-    { id: '#ORD-7240', user: 'Sarah Chen', items: 1, total: 399, status: 'Shipped', date: '15 mins ago' },
-    { id: '#ORD-7239', user: 'Marcus Wright', items: 3, total: 2450, status: 'Delivered', date: '1 hour ago' },
-    { id: '#ORD-7238', user: 'Elena Rossi', items: 1, total: 1199, status: 'Pending', date: '3 hours ago' },
+  // Display real orders, fallback to mock if empty for demo feel, 
+  // but the user wants to see their orders, so let's prioritize real ones.
+  const displayOrders = orders.length > 0 ? orders.slice(0, 5) : [
+    { id: '#ORD-7241', userName: 'Alex Rivera', items: [{ quantity: 2 }], total: 1598, status: 'Processing', createdAt: new Date(Date.now() - 120000).toISOString() },
+    { id: '#ORD-7240', userName: 'Sarah Chen', items: [{ quantity: 1 }], total: 399, status: 'Shipped', createdAt: new Date(Date.now() - 900000).toISOString() },
   ];
 
   return (
@@ -84,18 +87,22 @@ export const AdminDashboard = () => {
                   <tr className="text-[10px] uppercase tracking-widest text-white/30 border-b border-white/5">
                     <th className="px-8 py-4">Order ID</th>
                     <th className="px-8 py-4">Customer</th>
+                    <th className="px-8 py-4">Items</th>
                     <th className="px-8 py-4">Total</th>
                     <th className="px-8 py-4">Status</th>
                     <th className="px-8 py-4 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm">
-                  {recentOrders.map((order) => (
+                  {displayOrders.map((order) => (
                     <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
                       <td className="px-8 py-6 font-mono text-neon-cyan">{order.id}</td>
                       <td className="px-8 py-6">
-                        <div className="font-bold">{order.user}</div>
-                        <div className="text-[10px] text-white/30">{order.date}</div>
+                        <div className="font-bold">{order.userName}</div>
+                        <div className="text-[10px] text-white/30">{new Date(order.createdAt).toLocaleString()}</div>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className="font-bold">{order.items.reduce((sum: number, item: any) => sum + item.quantity, 0)}</span>
                       </td>
                       <td className="px-8 py-6 font-bold">{formatPrice(order.total)}</td>
                       <td className="px-8 py-6">

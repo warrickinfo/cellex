@@ -2,15 +2,26 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Truck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useCartStore } from '../store';
+import { useCartStore, useAuthStore, useOrderStore } from '../store';
 import { formatPrice, cn } from '../lib/utils';
 import { toast } from 'sonner';
 
 export const Cart = () => {
   const { items, removeItem, updateQuantity, total, clearCart } = useCartStore();
+  const { user } = useAuthStore();
+  const { addOrder } = useOrderStore();
 
   const handleCheckout = () => {
     if (items.length === 0) return;
+    
+    // Save order to store
+    addOrder({
+      userId: user?.id || 'guest',
+      userName: user?.name || 'Guest User',
+      items: [...items],
+      total: total * 1.08, // Including estimated tax
+    });
+
     toast.success('Order placed successfully!', {
       description: 'Your premium gadgets are on the way.',
       style: {
