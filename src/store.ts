@@ -90,3 +90,20 @@ export const useAuthStore = create<AuthStore>((set) => ({
   setUser: (user) => set({ user }),
   logout: () => set({ user: null }),
 }));
+
+interface ThemeStore {
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
+}
+
+export const useThemeStore = create<ThemeStore>()(
+  persist(
+    (set) => ({
+      theme: 'dark',
+      toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
+    }),
+    {
+      name: 'cellex-theme',
+    }
+  )
+);

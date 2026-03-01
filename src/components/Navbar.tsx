@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShoppingCart, User, Search, Menu, X, ChevronRight } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, X, ChevronRight, Moon, Sun } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useCartStore, useAuthStore } from '../store';
+import { useCartStore, useAuthStore, useThemeStore } from '../store';
 import { cn } from '../lib/utils';
 
 export const Navbar = () => {
@@ -10,6 +10,7 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { items } = useCartStore();
   const { user } = useAuthStore();
+  const { theme, toggleTheme } = useThemeStore();
   const location = useLocation();
 
   React.useEffect(() => {
@@ -52,7 +53,7 @@ export const Navbar = () => {
                 to={link.path}
                 className={cn(
                   'text-sm font-medium transition-colors hover:text-neon-cyan relative group',
-                  location.pathname === link.path ? 'text-neon-cyan' : 'text-white/70'
+                  location.pathname === link.path ? 'text-neon-cyan' : 'text-muted'
                 )}
               >
                 {link.name}
@@ -66,19 +67,25 @@ export const Navbar = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
+            <button 
+              onClick={toggleTheme}
+              className="p-2 hover:bg-white/10 rounded-full transition-colors text-muted hover:text-neon-cyan"
+            >
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
             <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-              <Search size={20} className="text-white/70" />
+              <Search size={20} className="text-muted" />
             </button>
             <Link to="/cart" className="p-2 hover:bg-white/10 rounded-full transition-colors relative group">
-              <ShoppingCart size={20} className="text-white/70 group-hover:text-neon-cyan" />
+              <ShoppingCart size={20} className="text-muted group-hover:text-neon-cyan" />
               {items.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-neon-magenta text-[10px] font-bold flex items-center justify-center rounded-full animate-pulse">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-neon-magenta text-[10px] font-bold flex items-center justify-center rounded-full animate-pulse text-white">
                   {items.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               )}
             </Link>
             <Link to={user ? (user.role === 'admin' ? '/admin' : '/account') : '/login'} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-              <User size={20} className="text-white/70" />
+              <User size={20} className="text-muted hover:text-neon-cyan" />
             </Link>
             <button 
               className="md:hidden p-2 hover:bg-white/10 rounded-full transition-colors"

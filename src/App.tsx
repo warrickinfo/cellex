@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
@@ -7,8 +7,9 @@ import { Shop } from './pages/Shop';
 import { ProductDetail } from './pages/ProductDetail';
 import { Cart } from './pages/Cart';
 import { Login } from './pages/Login';
+import { Account } from './pages/Account';
 import { AdminDashboard } from './pages/AdminDashboard';
-import { useAuthStore } from './store';
+import { useAuthStore, useThemeStore } from './store';
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) => {
   const { user } = useAuthStore();
@@ -20,9 +21,20 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
 };
 
 export default function App() {
+  const { theme } = useThemeStore();
+
+  React.useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [theme]);
+
   return (
     <Router>
-      <div className="min-h-screen bg-[#050505] text-white selection:bg-neon-cyan/30">
+      <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] selection:bg-neon-cyan/30 transition-colors duration-500">
         <Navbar />
         
         <Routes>
@@ -32,6 +44,16 @@ export default function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           
+          {/* User Routes */}
+          <Route 
+            path="/account" 
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            } 
+          />
+
           {/* Admin Routes */}
           <Route 
             path="/admin" 
@@ -48,12 +70,14 @@ export default function App() {
               <h1 className="text-9xl font-display font-bold text-gradient mb-4">404</h1>
               <h2 className="text-3xl font-bold mb-6">Lost in the future?</h2>
               <p className="text-white/40 mb-10 max-w-sm">The page you're looking for doesn't exist in this timeline.</p>
-              <Navigate to="/" />
+              <Link to="/" className="px-8 py-4 rounded-2xl bg-white text-black font-bold">
+                Return Home
+              </Link>
             </div>
           } />
         </Routes>
 
-        <Toaster position="bottom-right" theme="dark" closeButton />
+        <Toaster position="bottom-right" theme={theme} closeButton />
       </div>
     </Router>
   );
