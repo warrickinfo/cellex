@@ -28,19 +28,19 @@ export const Navbar = () => {
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-6 py-4',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-6 py-4',
         isScrolled ? 'py-3' : 'py-6'
       )}
     >
       <div className="max-w-7xl mx-auto">
         <div className={cn(
-          'glass-morphism rounded-full px-6 py-3 flex items-center justify-between transition-all duration-500',
-          isScrolled ? 'bg-white/10 scale-95' : 'bg-white/5'
+          'ios-glass rounded-full px-6 py-3 flex items-center justify-between transition-all duration-700',
+          isScrolled ? 'scale-95 shadow-2xl' : 'scale-100'
         )}>
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff6b00] to-[#cc5500] flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
-              <span className="text-black font-bold text-xl">C</span>
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-ios-orange to-ios-gold flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+              <span className="text-white font-bold text-xl">C</span>
             </div>
             <span className="text-2xl font-display font-bold tracking-tighter">CELLEX</span>
           </Link>
@@ -52,46 +52,46 @@ export const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-neon-cyan relative group',
-                  location.pathname === link.path ? 'text-neon-cyan' : 'text-muted'
+                  'text-sm font-semibold transition-all duration-300 hover:opacity-100 relative group',
+                  location.pathname === link.path ? 'opacity-100' : 'opacity-40'
                 )}
               >
                 {link.name}
                 <span className={cn(
-                  'absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-cyan transition-all duration-300 group-hover:w-full',
-                  location.pathname === link.path ? 'w-full' : 'w-0'
+                  'absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-ios-orange transition-all duration-300',
+                  location.pathname === link.path ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
                 )} />
               </Link>
             ))}
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <button 
               onClick={toggleTheme}
-              className="p-2 hover:bg-white/10 rounded-full transition-colors text-muted hover:text-neon-cyan"
+              className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90"
             >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
-              <Search size={20} className="text-muted" />
+            <button className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90">
+              <Search size={18} className="opacity-60" />
             </button>
-            <Link to="/cart" className="p-2 hover:bg-white/10 rounded-full transition-colors relative group">
-              <ShoppingCart size={20} className="text-muted group-hover:text-neon-cyan" />
+            <Link to="/cart" className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 relative group active:scale-90">
+              <ShoppingCart size={18} className="opacity-60 group-hover:opacity-100" />
               {items.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-neon-magenta text-[10px] font-bold flex items-center justify-center rounded-full animate-pulse text-white">
+                <span className="absolute top-1 right-1 w-4 h-4 bg-ios-orange text-[9px] font-bold flex items-center justify-center rounded-full text-white shadow-lg">
                   {items.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               )}
             </Link>
-            <Link to={user ? (user.role === 'admin' ? '/admin' : '/account') : '/login'} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-              <User size={20} className="text-muted hover:text-neon-cyan" />
+            <Link to={user ? (user.role === 'admin' ? '/admin' : '/account') : '/login'} className="p-2 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90">
+              <User size={18} className="opacity-60 hover:opacity-100" />
             </Link>
             <button 
-              className="md:hidden p-2 hover:bg-white/10 rounded-full transition-colors"
+              className="md:hidden p-2 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </div>

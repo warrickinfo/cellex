@@ -2,8 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Star, ShieldCheck, Truck, RotateCcw, ChevronRight } from 'lucide-react';
-import { MOCK_PRODUCTS } from '../lib/supabase';
-import { useCartStore } from '../store';
+import { useCartStore, useProductStore } from '../store';
 import { formatPrice, cn } from '../lib/utils';
 import { toast } from 'sonner';
 
@@ -11,10 +10,11 @@ export const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCartStore();
+  const { products } = useProductStore();
   const [selectedImage, setSelectedImage] = React.useState(0);
   const [quantity, setQuantity] = React.useState(1);
 
-  const product = MOCK_PRODUCTS.find(p => p.id === id);
+  const product = products.find(p => p.id === id);
 
   if (!product) {
     return (

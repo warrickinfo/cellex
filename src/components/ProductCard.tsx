@@ -32,41 +32,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -10 }}
-      className="group relative"
+      whileHover={{ y: -8 }}
+      className="group relative h-full"
     >
-      <Link to={`/product/${product.id}`}>
-        <div className="glass-morphism rounded-[2.5rem] overflow-hidden p-4 h-full flex flex-col transition-all duration-500 group-hover:border-neon-cyan/50 group-hover:shadow-[0_0_30px_rgba(0,242,255,0.15)]">
+      <Link to={`/product/${product.id}`} className="block h-full">
+        <div className="ios-card overflow-hidden p-5 h-full flex flex-col">
           {/* Image Container */}
-          <div className="relative aspect-square rounded-[2rem] overflow-hidden bg-white/5 mb-6">
+          <div className="relative aspect-square rounded-[1.8rem] overflow-hidden bg-white/5 mb-6">
             <img
               src={product.images[0]}
               alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 saturate-[1.1]"
               referrerPolicy="no-referrer"
             />
             
             {/* Overlay Actions */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-3">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={handleAddToCart}
-                className="w-12 h-12 rounded-full bg-neon-cyan text-black flex items-center justify-center shadow-lg"
+                className="w-12 h-12 rounded-full bg-ios-orange text-white flex items-center justify-center shadow-xl backdrop-blur-md"
               >
                 <ShoppingCart size={20} />
               </motion.button>
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center shadow-lg"
-              >
-                <Eye size={20} />
-              </motion.div>
             </div>
 
             {/* Category Tag */}
-            <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-[10px] font-bold uppercase tracking-wider">
+            <div className="absolute top-4 left-4 px-3 py-1 rounded-full ios-glass text-[9px] font-bold uppercase tracking-widest opacity-80">
               {product.category}
             </div>
           </div>
@@ -74,27 +67,29 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {/* Content */}
           <div className="flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-white/50">{product.brand}</span>
-              <div className="flex items-center gap-1">
-                <Star size={12} className="text-yellow-400 fill-yellow-400" />
-                <span className="text-xs font-bold">4.9</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">{product.brand}</span>
+              <div className="flex items-center gap-1 ios-glass px-2 py-0.5 rounded-full">
+                <Star size={10} className="text-ios-gold fill-ios-gold" />
+                <span className="text-[10px] font-bold">4.9</span>
               </div>
             </div>
             
-            <h3 className="text-lg font-bold mb-2 group-hover:text-neon-cyan transition-colors line-clamp-1">
+            <h3 className="text-lg font-bold mb-3 group-hover:text-ios-orange transition-colors line-clamp-1 tracking-tight">
               {product.name}
             </h3>
             
             <div className="mt-auto flex items-center justify-between">
-              <span className="text-xl font-display font-bold text-gradient">
+              <span className="text-xl font-display font-bold text-ios-orange">
                 {formatPrice(product.price)}
               </span>
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={handleAddToCart}
-                className="text-xs font-bold text-neon-cyan hover:underline"
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-ios-orange hover:text-white transition-all duration-300"
               >
-                + Add to Cart
-              </button>
+                <ShoppingCart size={16} />
+              </motion.button>
             </div>
           </div>
         </div>

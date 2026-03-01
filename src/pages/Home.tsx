@@ -3,10 +3,11 @@ import { motion } from 'motion/react';
 import { ChevronRight, Zap, Shield, Globe, Smartphone, Laptop, Headphones } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ProductCard } from '../components/ProductCard';
-import { MOCK_PRODUCTS } from '../lib/supabase';
+import { useProductStore } from '../store';
 import { cn } from '../lib/utils';
 
 export const Home = () => {
+  const { products } = useProductStore();
   return (
     <div className="relative min-h-screen">
       {/* Background Glows */}
@@ -14,109 +15,76 @@ export const Home = () => {
       <div className="bg-glow bottom-[-10%] right-[-10%] bg-[#cc5500]/10" />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <section className="pt-40 pb-20 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6">
-              <Zap size={16} className="text-[#ff6b00]" />
-              <span className="text-xs font-bold tracking-widest uppercase">Next Gen Tech Store</span>
-            </div>
-            <h1 className="text-6xl md:text-8xl font-display font-bold leading-[0.9] mb-8">
-              FUTURE OF <br />
-              <span className="text-gradient">GADGETS</span> IS HERE.
-            </h1>
-            <p className="text-lg text-white/60 mb-10 max-w-lg leading-relaxed">
-              Experience the next evolution of technology with Cellex. Premium devices, 
-              liquid-smooth performance, and ultra-modern design.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/shop">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-2xl bg-white text-black font-bold flex items-center gap-2 group"
-                >
-                  Explore Shop
-                  <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-              </Link>
-              <Link to="/shop?category=Smartphones">
-                <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 font-bold backdrop-blur-xl"
-                >
-                  New Arrivals
-                </motion.button>
-              </Link>
-            </div>
+            {/* Hero content removed */}
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative"
+            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-24 relative max-w-5xl mx-auto"
           >
-            <div className="relative z-10 animate-float">
+            <div className="relative z-10 ios-card overflow-hidden aspect-[16/9]">
               <img
-                src="https://picsum.photos/seed/tech-hero/800/800"
+                src="https://picsum.photos/seed/ios26/1600/900"
                 alt="Hero Gadget"
-                className="w-full h-auto rounded-[3rem] shadow-2xl border border-white/10"
+                className="w-full h-full object-cover saturate-[1.2] hover:scale-105 transition-transform duration-1000"
                 referrerPolicy="no-referrer"
               />
-              {/* Floating Glass Elements */}
-              <div className="absolute -top-10 -right-10 glass-morphism p-6 rounded-3xl animate-float delay-1000">
-                <Smartphone className="text-neon-cyan mb-2" />
-                <div className="text-xs font-bold">iPhone 16 Pro</div>
-                <div className="text-[10px] text-white/50">Starting at $999</div>
-              </div>
-              <div className="absolute -bottom-10 -left-10 glass-morphism p-6 rounded-3xl animate-float delay-2000">
-                <Headphones className="text-neon-magenta mb-2" />
-                <div className="text-xs font-bold">Sony XM5</div>
-                <div className="text-[10px] text-white/50">Noise Cancelling</div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+              
+              {/* Floating Widgets */}
+              <div className="absolute top-8 right-8 ios-glass p-6 rounded-[2rem] animate-ios-float">
+                <Smartphone className="text-ios-orange mb-2" size={24} />
+                <div className="text-sm font-bold">iPhone 26 Pro</div>
+                <div className="text-[10px] opacity-40 uppercase tracking-widest">Neural Link Ready</div>
               </div>
             </div>
-            {/* Background Circle */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-[#ff6b00]/20 to-[#cc5500]/20 blur-[100px] -z-10" />
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-ios-orange/10 blur-[150px] -z-10" />
           </motion.div>
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="py-20 px-6">
+      <section className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex items-end justify-between mb-16">
             <div>
-              <h2 className="text-4xl font-display font-bold mb-4">SHOP BY CATEGORY</h2>
-              <div className="h-1 w-20 bg-neon-cyan rounded-full" />
+              <h2 className="text-5xl font-display font-bold mb-4 tracking-tight">Categories</h2>
+              <p className="text-[var(--text-secondary)] font-medium">Browse our curated collections</p>
             </div>
-            <Link to="/shop" className="text-neon-cyan font-bold flex items-center gap-2 hover:underline">
-              View All <ChevronRight size={16} />
+            <Link to="/shop" className="ios-button-secondary text-sm">
+              View All
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { name: 'Smartphones', icon: Smartphone, color: 'from-orange-500/20' },
-              { name: 'Laptops', icon: Laptop, color: 'from-orange-600/20' },
-              { name: 'Audio', icon: Headphones, color: 'from-orange-700/20' },
-              { name: 'Wearables', icon: Zap, color: 'from-orange-400/20' },
+              { name: 'Smartphones', icon: Smartphone, color: 'bg-ios-orange/10' },
+              { name: 'Laptops', icon: Laptop, color: 'bg-blue-500/10' },
+              { name: 'Audio', icon: Headphones, color: 'bg-purple-500/10' },
+              { name: 'Wearables', icon: Zap, color: 'bg-emerald-500/10' },
             ].map((cat) => (
               <Link key={cat.name} to={`/shop?category=${cat.name}`}>
                 <motion.div
-                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileHover={{ y: -10, scale: 1.02 }}
                   className={cn(
-                    "glass-morphism p-8 rounded-[2rem] flex flex-col items-center justify-center gap-4 text-center group bg-gradient-to-br to-transparent",
+                    "ios-card p-10 flex flex-col items-center justify-center gap-6 text-center group",
                     cat.color
                   )}
                 >
-                  <cat.icon size={40} className="group-hover:text-neon-cyan transition-colors" />
-                  <span className="font-bold tracking-tight">{cat.name}</span>
+                  <div className="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <cat.icon size={40} className="text-ios-orange" />
+                  </div>
+                  <span className="text-xl font-bold tracking-tight">{cat.name}</span>
                 </motion.div>
               </Link>
             ))}
@@ -136,7 +104,7 @@ export const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {MOCK_PRODUCTS.slice(0, 3).map((product) => (
+            {products.slice(0, 3).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

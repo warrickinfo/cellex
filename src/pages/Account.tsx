@@ -1,18 +1,36 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { User, Package, Settings, LogOut, ChevronRight, Mail, Shield } from 'lucide-react';
-import { useAuthStore } from '../store';
+import { useAuthStore, useOrderRequestStore } from '../store';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export const Account = () => {
   const { user, logout } = useAuthStore();
+  const { addRequest } = useOrderRequestStore();
   const navigate = useNavigate();
+
+  const [requestProduct, setRequestProduct] = React.useState('');
+  const [requestDesc, setRequestDesc] = React.useState('');
 
   const handleLogout = () => {
     logout();
     toast.success('Logged out successfully');
     navigate('/');
+  };
+
+  const handleSubmitRequest = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    addRequest({
+      userId: user.id,
+      userName: user.name || user.email.split('@')[0],
+      productName: requestProduct,
+      description: requestDesc,
+    });
+    toast.success('Order request submitted successfully!');
+    setRequestProduct('');
+    setRequestDesc('');
   };
 
   if (!user) {
@@ -104,6 +122,36 @@ export const Account = () => {
                   Start Shopping
                 </button>
               </div>
+            </div>
+            <div className="ios-card p-8">
+              <h3 className="text-xl font-bold mb-6 tracking-tight">Request a Product</h3>
+              <p className="text-xs font-medium opacity-40 mb-8">Can't find what you're looking for? Let us know!</p>
+              <form onSubmit={handleSubmitRequest} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-1">Product Name</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={requestProduct}
+                    onChange={(e) => setRequestProduct(e.target.value)}
+                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
+                    placeholder="e.g. RTX 5090 FE"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-1">Details</label>
+                  <textarea 
+                    required
+                    value={requestDesc}
+                    onChange={(e) => setRequestDesc(e.target.value)}
+                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all h-24 resize-none"
+                    placeholder="Tell us more about the product..."
+                  />
+                </div>
+                <button type="submit" className="ios-button-primary w-full py-4">
+                  Submit Request
+                </button>
+              </form>
             </div>
           </main>
         </div>

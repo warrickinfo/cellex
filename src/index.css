@@ -4,96 +4,80 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
   
-  --color-glass-bg: rgba(255, 255, 255, 0.03);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
-  --color-neon-cyan: #ff6b00;
-  --color-neon-magenta: #ff9e00;
-  --color-neon-blue: #cc5500;
+  --color-ios-orange: #ff6b00;
+  --color-ios-gold: #ff9e00;
+  --color-ios-dark: #000000;
+  --color-ios-light: #ffffff;
+
+  --animate-gradient: gradient 8s ease infinite;
+  --animate-ios-float: ios-float 5s ease-in-out infinite;
+
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes ios-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
 }
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #050505;
-    --glass-bg: rgba(0, 0, 0, 0.03);
-    --glass-border: rgba(0, 0, 0, 0.1);
-    --text-muted: rgba(0, 0, 0, 0.5);
+    --background: #fbfbfd;
+    --foreground: #1d1d1f;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --card-bg: #ffffff;
+    --text-secondary: rgba(0, 0, 0, 0.5);
   }
 
   .dark {
-    --background: #050505;
-    --foreground: #ffffff;
-    --glass-bg: rgba(255, 255, 255, 0.03);
+    --background: #000000;
+    --foreground: #f5f5f7;
+    --glass-bg: rgba(20, 20, 20, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --text-muted: rgba(255, 255, 255, 0.5);
+    --card-bg: #161617;
+    --text-secondary: rgba(255, 255, 255, 0.5);
   }
 
   body {
-    @apply bg-[var(--background)] text-[var(--foreground)] selection:bg-neon-cyan/30 antialiased overflow-x-hidden transition-colors duration-500;
+    @apply bg-[var(--background)] text-[var(--foreground)] selection:bg-ios-orange/30 antialiased overflow-x-hidden transition-colors duration-700;
     font-family: var(--font-sans);
+    letter-spacing: -0.011em;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-[var(--glass-bg)] backdrop-blur-2xl border border-[var(--glass-border)];
+  .ios-glass {
+    @apply backdrop-blur-[30px] saturate-[1.8] bg-[var(--glass-bg)] border border-[var(--glass-border)];
   }
   
-  .glass-morphism {
-    background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(255, 255, 255, 0.01) 100%);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  .ios-card {
+    @apply bg-[var(--card-bg)] rounded-[2.5rem] border border-[var(--glass-border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500;
   }
 
-  .dark .glass-morphism {
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  }
-
-  .text-muted {
-    color: var(--text-muted);
+  .dark .ios-card {
+    @apply shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.4)];
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#ff6b00] via-[#ff9e00] to-[#cc5500];
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-ios-orange via-ios-gold to-ios-orange bg-[length:200%_auto] animate-gradient;
   }
 
-  .liquid-shadow {
-    @apply shadow-[0_0_40px_-10px_#ff6b00];
+  .ios-button-primary {
+    @apply rounded-full px-6 py-3 font-semibold transition-all duration-300 active:scale-95 disabled:opacity-50 bg-ios-orange text-white shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:bg-[#ff7b1a];
   }
 
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+  .ios-button-secondary {
+    @apply rounded-full px-6 py-3 font-semibold transition-all duration-300 active:scale-95 disabled:opacity-50 bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20;
   }
-  
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-/* Custom Liquid Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; filter: blur(40px); }
-  50% { opacity: 0.8; filter: blur(60px); }
 }
 
 .bg-glow {
-  position: fixed;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  z-index: -1;
-  pointer-events: none;
-  animation: pulse-glow 10s ease-in-out infinite;
+  @apply fixed -z-10 blur-[120px] rounded-full opacity-30 pointer-events-none;
+  background: radial-gradient(circle at center, #ff6b00 0%, transparent 70%);
 }
 

@@ -160,6 +160,132 @@ export interface Order {
   createdAt: string;
 }
 
+export interface OrderRequest {
+  id: string;
+  userId: string;
+  userName: string;
+  productName: string;
+  description: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  createdAt: string;
+}
+
+interface ProductStore {
+  products: Product[];
+  addProduct: (product: Omit<Product, 'id'>) => void;
+  removeProduct: (productId: string) => void;
+}
+
+export const useProductStore = create<ProductStore>()(
+  persist(
+    (set, get) => ({
+      products: [
+        {
+          id: '1',
+          name: 'iPhone 16 Pro Max',
+          price: 185000,
+          category: 'Smartphones',
+          brand: 'Apple',
+          images: ['https://picsum.photos/seed/iphone16/800/800'],
+          specs: { display: '6.9" Super Retina XDR', chip: 'A18 Pro', camera: '48MP Fusion' },
+          stock: 50,
+          description: 'The ultimate iPhone with the largest display ever and the most powerful chip.'
+        },
+        {
+          id: '2',
+          name: 'MacBook Pro M4',
+          price: 245000,
+          category: 'Laptops',
+          brand: 'Apple',
+          images: ['https://picsum.photos/seed/macbookm4/800/800'],
+          specs: { display: '14" Liquid Retina XDR', chip: 'M4 Max', ram: '32GB' },
+          stock: 20,
+          description: 'The most advanced laptop for demanding workflows.'
+        },
+        {
+          id: '3',
+          name: 'Sony WH-1000XM5',
+          price: 45000,
+          category: 'Audio',
+          brand: 'Sony',
+          images: ['https://picsum.photos/seed/sonyh5/800/800'],
+          specs: { battery: '30 hours', noise_cancelling: 'Industry Leading', driver: '30mm' },
+          stock: 100,
+          description: 'Your world, nothing else. Best-in-class noise cancellation.'
+        },
+        {
+          id: '4',
+          name: 'Samsung Galaxy Watch Ultra',
+          price: 75000,
+          category: 'Wearables',
+          brand: 'Samsung',
+          images: ['https://picsum.photos/seed/galaxywatch/800/800'],
+          specs: { display: 'Sapphire Crystal', battery: '100 hours', water_resistance: '10ATM' },
+          stock: 35,
+          description: 'The most rugged and capable Galaxy Watch yet.'
+        },
+        {
+          id: '5',
+          name: 'iPad Pro M4',
+          price: 125000,
+          category: 'Tablets',
+          brand: 'Apple',
+          images: ['https://picsum.photos/seed/ipadpro/800/800'],
+          specs: { display: 'Ultra Retina XDR', chip: 'M4', thickness: '5.1mm' },
+          stock: 45,
+          description: 'Thinner than ever, more powerful than imaginable.'
+        }
+      ],
+      addProduct: (productData) => {
+        const newProduct: Product = {
+          ...productData,
+          id: Math.random().toString(36).substring(7),
+        };
+        set({ products: [...get().products, newProduct] });
+      },
+      removeProduct: (productId) => {
+        set({ products: get().products.filter((p) => p.id !== productId) });
+      },
+    }),
+    {
+      name: 'cellex-products',
+    }
+  )
+);
+
+interface OrderRequestStore {
+  requests: OrderRequest[];
+  addRequest: (request: Omit<OrderRequest, 'id' | 'createdAt' | 'status'>) => void;
+  updateRequestStatus: (requestId: string, status: OrderRequest['status']) => void;
+}
+
+export const useOrderRequestStore = create<OrderRequestStore>()(
+  persist(
+    (set, get) => ({
+      requests: [],
+      addRequest: (requestData) => {
+        const newRequest: OrderRequest = {
+          ...requestData,
+          id: `REQ-${Math.floor(1000 + Math.random() * 9000)}`,
+          status: 'Pending',
+          createdAt: new Date().toISOString(),
+        };
+        set({ requests: [newRequest, ...get().requests] });
+      },
+      updateRequestStatus: (requestId, status) => {
+        set({
+          requests: get().requests.map((r) =>
+            r.id === requestId ? { ...r, status } : r
+          ),
+        });
+      },
+    }),
+    {
+      name: 'cellex-order-requests',
+    }
+  )
+);
+
 interface OrderStore {
   orders: Order[];
   addOrder: (order: Omit<Order, 'id' | 'createdAt' | 'status'>) => void;

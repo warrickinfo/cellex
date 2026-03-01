@@ -5,17 +5,19 @@ import { ProductCard } from '../components/ProductCard';
 import { MOCK_PRODUCTS } from '../lib/supabase';
 import { cn } from '../lib/utils';
 import { useSearchParams } from 'react-router-dom';
+import { useProductStore } from '../store';
 
 export const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState(searchParams.get('category') || 'All');
-  const [priceRange, setPriceRange] = React.useState(2000);
+  const [priceRange, setPriceRange] = React.useState(300000);
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
+  const { products } = useProductStore();
 
   const categories = ['All', 'Smartphones', 'Laptops', 'Audio', 'Wearables', 'Tablets'];
 
-  const filteredProducts = MOCK_PRODUCTS.filter(product => {
+  const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.brand.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
@@ -27,56 +29,53 @@ export const Shop = () => {
     <div className="pt-32 pb-20 px-6 min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div>
-            <h1 className="text-5xl font-display font-bold mb-4">EXPLORE <span className="text-gradient">TECH</span></h1>
-            <p className="text-white/50">Browse our collection of premium devices and accessories.</p>
+            <h1 className="text-6xl font-display font-bold mb-4 tracking-tight">Explore</h1>
+            <p className="text-[var(--text-secondary)] font-medium">Browse our collection of premium devices.</p>
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="glass-morphism rounded-2xl flex items-center px-4 py-2 w-full md:w-80 group focus-within:border-neon-cyan/50 transition-all">
-              <Search size={18} className="text-white/30 group-focus-within:text-neon-cyan" />
+            <div className="ios-glass rounded-full flex items-center px-6 py-3 w-full md:w-80 group focus-within:ring-2 ring-ios-orange/20 transition-all">
+              <Search size={18} className="opacity-30 group-focus-within:opacity-100 group-focus-within:text-ios-orange" />
               <input
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-none outline-none px-3 py-1 text-sm w-full"
+                className="bg-transparent border-none outline-none px-3 py-1 text-sm w-full font-medium"
               />
             </div>
-            <button className="glass-morphism p-3 rounded-2xl hover:bg-white/10 transition-colors md:hidden">
+            <button className="ios-glass p-3 rounded-full hover:bg-white/10 transition-colors md:hidden">
               <Filter size={20} />
             </button>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-[280px_1fr] gap-12">
+        <div className="grid lg:grid-cols-[280px_1fr] gap-16">
           {/* Sidebar Filters */}
-          <aside className="hidden lg:block space-y-10">
+          <aside className="hidden lg:block space-y-12">
             {/* Categories */}
             <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <Grid size={18} className="text-neon-cyan" />
-                Categories
-              </h3>
+              <h3 className="text-xs font-bold mb-8 uppercase tracking-[0.2em] opacity-40">Categories</h3>
               <div className="space-y-2">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
                     className={cn(
-                      "w-full text-left px-4 py-3 rounded-xl transition-all duration-300 flex items-center justify-between group",
+                      "w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center justify-between group font-semibold",
                       selectedCategory === cat 
-                        ? "bg-neon-cyan text-black font-bold" 
-                        : "hover:bg-white/5 text-white/60"
+                        ? "bg-ios-orange text-white shadow-lg shadow-ios-orange/20" 
+                        : "hover:bg-white/5 opacity-60 hover:opacity-100"
                     )}
                   >
                     {cat}
                     <span className={cn(
-                      "text-[10px] px-2 py-0.5 rounded-full",
-                      selectedCategory === cat ? "bg-black/20" : "bg-white/10"
+                      "text-[10px] px-2 py-0.5 rounded-full font-bold",
+                      selectedCategory === cat ? "bg-white/20" : "bg-white/10"
                     )}>
-                      {cat === 'All' ? MOCK_PRODUCTS.length : MOCK_PRODUCTS.filter(p => p.category === cat).length}
+                      {cat === 'All' ? products.length : products.filter(p => p.category === cat).length}
                     </span>
                   </button>
                 ))}
@@ -85,40 +84,22 @@ export const Shop = () => {
 
             {/* Price Range */}
             <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <SlidersHorizontal size={18} className="text-neon-magenta" />
-                Price Range
-              </h3>
+              <h3 className="text-xs font-bold mb-8 uppercase tracking-[0.2em] opacity-40">Price Range</h3>
               <div className="px-2">
                 <input
                   type="range"
                   min="0"
-                  max="3000"
-                  step="100"
+                  max="500000"
+                  step="1000"
                   value={priceRange}
                   onChange={(e) => setPriceRange(Number(e.target.value))}
-                  className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-neon-cyan"
+                  className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-ios-orange"
                 />
-                <div className="flex justify-between mt-4 text-xs font-bold text-white/40">
-                  <span>$0</span>
-                  <span className="text-neon-cyan text-sm">${priceRange}</span>
-                  <span>$3000+</span>
+                <div className="flex justify-between mt-6 text-[10px] font-bold opacity-40 uppercase tracking-widest">
+                  <span>৳0</span>
+                  <span className="text-ios-orange opacity-100">৳{priceRange}</span>
+                  <span>৳500000+</span>
                 </div>
-              </div>
-            </div>
-
-            {/* Brand Filter */}
-            <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <Zap size={18} className="text-neon-blue" />
-                Brands
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {['Apple', 'Samsung', 'Sony', 'Google', 'Dell'].map(brand => (
-                  <button key={brand} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-medium hover:border-neon-cyan transition-colors">
-                    {brand}
-                  </button>
-                ))}
               </div>
             </div>
           </aside>
@@ -126,28 +107,28 @@ export const Shop = () => {
           {/* Product Grid */}
           <main>
             {/* Toolbar */}
-            <div className="flex items-center justify-between mb-8 glass-morphism p-4 rounded-3xl">
-              <div className="text-sm font-medium text-white/50">
-                Showing <span className="text-white">{filteredProducts.length}</span> results
+            <div className="flex items-center justify-between mb-10 ios-glass p-4 rounded-full px-8">
+              <div className="text-xs font-bold opacity-40 uppercase tracking-widest">
+                <span className="opacity-100 text-[var(--foreground)]">{filteredProducts.length}</span> results
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={cn("p-2 rounded-lg transition-all", viewMode === 'grid' ? "bg-white text-black" : "text-white/40 hover:text-white")}
+                    className={cn("p-2 rounded-full transition-all", viewMode === 'grid' ? "bg-white text-black shadow-sm" : "opacity-40 hover:opacity-100")}
                   >
-                    <Grid size={18} />
+                    <Grid size={16} />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={cn("p-2 rounded-lg transition-all", viewMode === 'list' ? "bg-white text-black" : "text-white/40 hover:text-white")}
+                    className={cn("p-2 rounded-full transition-all", viewMode === 'list' ? "bg-white text-black shadow-sm" : "opacity-40 hover:opacity-100")}
                   >
-                    <List size={18} />
+                    <List size={16} />
                   </button>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl text-sm font-bold border border-white/10 hover:bg-white/10 transition-all">
-                  Sort by: Newest
-                  <ChevronDown size={16} />
+                <button className="flex items-center gap-2 px-5 py-2 ios-glass rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+                  Sort
+                  <ChevronDown size={14} />
                 </button>
               </div>
             </div>
