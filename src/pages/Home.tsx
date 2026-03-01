@@ -10,8 +10,8 @@ export const Home = () => {
   return (
     <div className="relative min-h-screen">
       {/* Background Glows */}
-      <div className="bg-glow top-[-10%] left-[-10%] bg-neon-cyan/20" />
-      <div className="bg-glow bottom-[-10%] right-[-10%] bg-neon-magenta/20" />
+      <div className="bg-glow top-[-10%] left-[-10%] bg-[#ff6b00]/10" />
+      <div className="bg-glow bottom-[-10%] right-[-10%] bg-[#cc5500]/10" />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
@@ -22,7 +22,7 @@ export const Home = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6">
-              <Zap size={16} className="text-neon-cyan" />
+              <Zap size={16} className="text-[#ff6b00]" />
               <span className="text-xs font-bold tracking-widest uppercase">Next Gen Tech Store</span>
             </div>
             <h1 className="text-6xl md:text-8xl font-display font-bold leading-[0.9] mb-8">
@@ -82,7 +82,7 @@ export const Home = () => {
               </div>
             </div>
             {/* Background Circle */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-neon-cyan/20 to-neon-blue/20 blur-[100px] -z-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-[#ff6b00]/20 to-[#cc5500]/20 blur-[100px] -z-10" />
           </motion.div>
         </div>
       </section>
@@ -102,10 +102,10 @@ export const Home = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'Smartphones', icon: Smartphone, color: 'from-cyan-500/20' },
-              { name: 'Laptops', icon: Laptop, color: 'from-blue-500/20' },
-              { name: 'Audio', icon: Headphones, color: 'from-purple-500/20' },
-              { name: 'Wearables', icon: Zap, color: 'from-pink-500/20' },
+              { name: 'Smartphones', icon: Smartphone, color: 'from-orange-500/20' },
+              { name: 'Laptops', icon: Laptop, color: 'from-orange-600/20' },
+              { name: 'Audio', icon: Headphones, color: 'from-orange-700/20' },
+              { name: 'Wearables', icon: Zap, color: 'from-orange-400/20' },
             ].map((cat) => (
               <Link key={cat.name} to={`/shop?category=${cat.name}`}>
                 <motion.div
@@ -174,7 +174,7 @@ export const Home = () => {
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
           <div className="col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-blue flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff6b00] to-[#cc5500] flex items-center justify-center">
                 <span className="text-black font-bold text-xl">C</span>
               </div>
               <span className="text-2xl font-display font-bold tracking-tighter">CELLEX</span>

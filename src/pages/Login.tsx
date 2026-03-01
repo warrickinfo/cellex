@@ -30,9 +30,15 @@ export const Login = () => {
     }
   };
 
+  const handleAdminPortal = () => {
+    setEmail('arvin_hanif');
+    setPassword('arvin_hanif');
+    toast.info('Admin credentials auto-filled. Click Sign In to enter.');
+  };
+
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen flex items-center justify-center">
-      <div className="bg-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-neon-blue/20" />
+      <div className="bg-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-neon-cyan/20" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -42,7 +48,7 @@ export const Login = () => {
         <div className="glass-morphism p-10 rounded-[3rem] relative overflow-hidden">
           {/* Logo */}
           <div className="flex flex-col items-center mb-10">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-blue flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-magenta flex items-center justify-center mb-4">
               <span className="text-black font-bold text-3xl">C</span>
             </div>
             <h1 className="text-3xl font-display font-bold">Welcome Back</h1>
@@ -51,15 +57,15 @@ export const Login = () => {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-white/60 ml-1">Email Address</label>
+              <label className="text-xs font-bold uppercase tracking-widest text-white/60 ml-1">Email or Admin ID</label>
               <div className="glass-morphism rounded-2xl flex items-center px-4 py-3 group focus-within:border-neon-cyan/50 transition-all">
                 <Mail size={18} className="text-white/30 group-focus-within:text-neon-cyan" />
                 <input
-                  type="email"
+                  type="text"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
+                  placeholder="name@example.com or Admin ID"
                   className="bg-transparent border-none outline-none px-3 py-1 text-sm w-full"
                 />
               </div>
@@ -83,15 +89,27 @@ export const Login = () => {
               </div>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              className="w-full py-4 rounded-2xl bg-white text-black font-bold flex items-center justify-center gap-2 group"
-            >
-              Sign In
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </motion.button>
+            <div className="space-y-4">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="w-full py-4 rounded-2xl bg-white text-black font-bold flex items-center justify-center gap-2 group"
+              >
+                Sign In
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="button"
+                onClick={handleAdminPortal}
+                className="w-full py-4 rounded-2xl bg-neon-cyan/10 border border-neon-cyan/20 text-neon-cyan font-bold flex items-center justify-center gap-2 group hover:bg-neon-cyan/20 transition-all"
+              >
+                Admin Portal
+              </motion.button>
+            </div>
           </form>
 
           <div className="relative my-10">

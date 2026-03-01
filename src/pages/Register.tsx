@@ -41,7 +41,7 @@ export const Register = () => {
 
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen flex items-center justify-center">
-      <div className="bg-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-neon-magenta/20" />
+      <div className="bg-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-neon-cyan/20" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -50,7 +50,7 @@ export const Register = () => {
       >
         <div className="glass-morphism p-10 rounded-[3rem] relative overflow-hidden">
           <div className="flex flex-col items-center mb-10">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-magenta to-neon-blue flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-magenta flex items-center justify-center mb-4">
               <span className="text-black font-bold text-3xl">C</span>
             </div>
             <h1 className="text-3xl font-display font-bold">Create Account</h1>

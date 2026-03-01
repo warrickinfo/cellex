@@ -6,9 +6,9 @@
   
   --color-glass-bg: rgba(255, 255, 255, 0.03);
   --color-glass-border: rgba(255, 255, 255, 0.1);
-  --color-neon-cyan: #00f2ff;
-  --color-neon-magenta: #ff00e5;
-  --color-neon-blue: #0066ff;
+  --color-neon-cyan: #ff6b00;
+  --color-neon-magenta: #ff9e00;
+  --color-neon-blue: #cc5500;
 }
 
 @layer base {
@@ -55,11 +55,11 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan via-neon-blue to-neon-magenta;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#ff6b00] via-[#ff9e00] to-[#cc5500];
   }
 
   .liquid-shadow {
-    box-shadow: 0 0 40px -10px var(--color-neon-blue);
+    @apply shadow-[0_0_40px_-10px_#ff6b00];
   }
 
   .hide-scrollbar::-webkit-scrollbar {

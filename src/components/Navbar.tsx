@@ -39,7 +39,7 @@ export const Navbar = () => {
         )}>
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-blue flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff6b00] to-[#cc5500] flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
               <span className="text-black font-bold text-xl">C</span>
             </div>
             <span className="text-2xl font-display font-bold tracking-tighter">CELLEX</span>

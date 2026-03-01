@@ -120,6 +120,15 @@ export const useUserStore = create<UserStore>()(
           password: 'admin123',
           role: 'admin',
           createdAt: new Date().toISOString(),
+        },
+        {
+          id: 'admin-2',
+          name: 'Arvin Hanif',
+          email: 'arvin_hanif',
+          phone: '0000000000',
+          password: 'arvin_hanif',
+          role: 'admin',
+          createdAt: new Date().toISOString(),
         }
       ],
       registerUser: (userData) => {
