@@ -58,12 +58,12 @@ export const ProductDetail = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="aspect-square neu-flat p-4"
+              className="aspect-square neu-flat p-4 rounded-full"
             >
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
-                className="w-full h-full object-cover rounded-[2.5rem]"
+                className="w-full h-full object-cover rounded-full"
                 referrerPolicy="no-referrer"
               />
             </motion.div>

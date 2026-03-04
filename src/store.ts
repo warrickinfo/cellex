@@ -81,19 +81,27 @@ export interface User {
   password?: string;
   role: 'user' | 'admin';
   createdAt: string;
+  profileImage?: string;
 }
 
 interface AuthStore {
   user: User | null;
   setUser: (user: User | null) => void;
+  updateUser: (data: Partial<User>) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       setUser: (user) => set({ user }),
+      updateUser: (data) => {
+        const currentUser = get().user;
+        if (currentUser) {
+          set({ user: { ...currentUser, ...data } });
+        }
+      },
       logout: () => set({ user: null }),
     }),
     {
@@ -156,7 +164,7 @@ export interface Order {
   userName: string;
   items: CartItem[];
   total: number;
-  status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered';
+  status: 'PENDING' | 'CONFIRMED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
   createdAt: string;
 }
 
@@ -300,7 +308,7 @@ export const useOrderStore = create<OrderStore>()(
         const newOrder: Order = {
           ...orderData,
           id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
-          status: 'Pending',
+          status: 'PENDING',
           createdAt: new Date().toISOString(),
         };
         set({ orders: [newOrder, ...get().orders] });
@@ -332,6 +340,50 @@ export const useThemeStore = create<ThemeStore>()(
     }),
     {
       name: 'cellex-theme',
+    }
+  )
+);
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning';
+  read: boolean;
+  createdAt: string;
+}
+
+interface NotificationStore {
+  notifications: Notification[];
+  addNotification: (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => void;
+  markAsRead: (id: string) => void;
+  clearAll: () => void;
+}
+
+export const useNotificationStore = create<NotificationStore>()(
+  persist(
+    (set, get) => ({
+      notifications: [],
+      addNotification: (notif) => {
+        const newNotif: Notification = {
+          ...notif,
+          id: Math.random().toString(36).substring(7),
+          read: false,
+          createdAt: new Date().toISOString(),
+        };
+        set({ notifications: [newNotif, ...get().notifications] });
+      },
+      markAsRead: (id) => {
+        set({
+          notifications: get().notifications.map((n) =>
+            n.id === id ? { ...n, read: true } : n
+          ),
+        });
+      },
+      clearAll: () => set({ notifications: [] }),
+    }),
+    {
+      name: 'cellex-notifications',
     }
   )
 );

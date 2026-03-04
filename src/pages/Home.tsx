@@ -1,14 +1,17 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Zap, Search, User, ArrowRight, Cloud, ChevronLeft, ChevronRight, ShoppingCart, Star } from 'lucide-react';
+import { Zap, Search, User, ArrowRight, Cloud, ChevronLeft, ChevronRight, ShoppingCart, Star, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useProductStore, useCartStore } from '../store';
+import { useProductStore, useCartStore, useNotificationStore } from '../store';
 import { formatPrice, cn } from '../lib/utils';
 import { toast } from 'sonner';
 
 export const Home = () => {
   const { products } = useProductStore();
   const { addItem } = useCartStore();
+  const { notifications } = useNotificationStore();
+  
+  const unreadCount = notifications.filter(n => !n.read).length;
   
   const featuredProducts = products.slice(0, 4);
 
@@ -35,9 +38,9 @@ export const Home = () => {
               <Zap size={18} className="text-ios-orange" />
             </Link>
             <nav className="hidden md:flex items-center gap-8 text-sm font-medium opacity-60">
-              <Link to="/shop" className="hover:opacity-100 transition-opacity">Shop All</Link>
-              <Link to="/shop?category=Smartphones" className="hover:opacity-100 transition-opacity">Smartphones</Link>
-              <Link to="/shop?category=Laptops" className="hover:opacity-100 transition-opacity">Laptops</Link>
+              <Link to="/" className="hover:opacity-100 transition-opacity">Home</Link>
+              <Link to="/shop" className="hover:opacity-100 transition-opacity">Shop</Link>
+              <Link to="/shop?filter=categories" className="hover:opacity-100 transition-opacity">Categories</Link>
             </nav>
           </div>
           
@@ -50,6 +53,12 @@ export const Home = () => {
                 className="bg-transparent border-none outline-none text-sm w-full opacity-60"
               />
             </div>
+            <Link to="/account" className="w-10 h-10 neu-button flex items-center justify-center relative">
+              <Bell size={18} className={cn("opacity-60", unreadCount > 0 && "text-ios-orange opacity-100")} />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-3 h-3 bg-ios-orange rounded-full animate-pulse shadow-lg" />
+              )}
+            </Link>
             <Link to="/account" className="w-10 h-10 neu-button flex items-center justify-center">
               <User size={18} className="opacity-60" />
             </Link>
@@ -140,11 +149,11 @@ export const Home = () => {
               >
                 <Link to={`/product/${product.id}`} className="block">
                   <div className="neu-flat p-6 h-full flex flex-col">
-                    <div className="relative aspect-square rounded-[1.8rem] overflow-hidden neu-inset mb-6 p-4">
+                    <div className="relative aspect-square rounded-full overflow-hidden neu-inset mb-6 p-4">
                       <img
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 rounded-full"
                         referrerPolicy="no-referrer"
                       />
                       <div className="absolute top-4 left-4 px-3 py-1 rounded-full ios-glass text-[9px] font-bold uppercase tracking-widest opacity-80">

@@ -1,17 +1,21 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import { ShoppingCart, User, Search, Menu, X, ChevronRight, Moon, Sun } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ShoppingCart, User, Search, Menu, X, ChevronRight, Moon, Sun, Bell, Trash2 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useCartStore, useAuthStore, useThemeStore } from '../store';
+import { useCartStore, useAuthStore, useThemeStore, useNotificationStore } from '../store';
 import { cn } from '../lib/utils';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isNotifOpen, setIsNotifOpen] = React.useState(false);
   const { items } = useCartStore();
   const { user } = useAuthStore();
   const { theme, toggleTheme } = useThemeStore();
+  const { notifications, markAsRead, clearAll } = useNotificationStore();
   const location = useLocation();
+
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -75,6 +79,68 @@ export const Navbar = () => {
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
+
+            {/* Notifications */}
+            <div className="relative">
+              <button 
+                onClick={() => setIsNotifOpen(!isNotifOpen)}
+                className="w-10 h-10 neu-button flex items-center justify-center relative group active:scale-90"
+              >
+                <Bell size={18} className={cn("opacity-60 group-hover:opacity-100", unreadCount > 0 && "text-ios-orange opacity-100")} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 w-4 h-4 bg-ios-orange text-[9px] font-bold flex items-center justify-center rounded-full text-white shadow-lg animate-pulse">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              <AnimatePresence>
+                {isNotifOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full right-0 mt-4 w-80 neu-flat overflow-hidden z-[60]"
+                  >
+                    <div className="p-4 border-b border-black/5 flex items-center justify-between">
+                      <h3 className="text-sm font-bold uppercase tracking-widest opacity-40">Notifications</h3>
+                      <button 
+                        onClick={clearAll}
+                        className="text-[10px] font-bold text-ios-orange uppercase tracking-widest hover:underline"
+                      >
+                        Clear All
+                      </button>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.length > 0 ? (
+                        notifications.map((n) => (
+                          <div 
+                            key={n.id} 
+                            onClick={() => markAsRead(n.id)}
+                            className={cn(
+                              "p-4 border-b border-black/5 last:border-0 cursor-pointer transition-colors",
+                              !n.read ? "bg-ios-orange/5" : "hover:bg-black/5"
+                            )}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs font-bold">{n.title}</span>
+                              <span className="text-[9px] opacity-40">{new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <p className="text-xs opacity-60 line-clamp-2">{n.message}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-8 text-center">
+                          <Bell size={24} className="mx-auto mb-2 opacity-10" />
+                          <p className="text-xs opacity-40">No notifications yet</p>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <button className="w-10 h-10 neu-button flex items-center justify-center transition-all duration-300 active:scale-90">
               <Search size={18} className="opacity-60" />
             </button>

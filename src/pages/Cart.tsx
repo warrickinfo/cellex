@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Truck, RotateCcw } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldCheck, Truck, RotateCcw, CreditCard, Wallet } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCartStore, useAuthStore, useOrderStore } from '../store';
 import { formatPrice, cn } from '../lib/utils';
 import { toast } from 'sonner';
@@ -10,28 +10,36 @@ export const Cart = () => {
   const { items, removeItem, updateQuantity, total, clearCart } = useCartStore();
   const { user } = useAuthStore();
   const { addOrder } = useOrderStore();
+  const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = React.useState<'card' | 'cod'>('cod');
 
   const handleCheckout = () => {
     if (items.length === 0) return;
     
+    if (!user) {
+      toast.error('Please login to place an order');
+      navigate('/login');
+      return;
+    }
+
     // Save order to store
     addOrder({
-      userId: user?.id || 'guest',
-      userName: user?.name || 'Guest User',
+      userId: user.id,
+      userName: user.name || user.email.split('@')[0],
       items: [...items],
       total: total * 1.08, // Including estimated tax
     });
 
     toast.success('Order placed successfully!', {
-      description: 'Your premium gadgets are on the way.',
+      description: paymentMethod === 'card' ? 'Payment processed via Card.' : 'Cash on delivery confirmed.',
       style: {
-        background: 'rgba(255, 255, 255, 0.1)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        color: '#fff',
+        background: 'var(--card-bg)',
+        border: '1px solid var(--glass-border)',
+        color: 'var(--foreground)',
       }
     });
     clearCart();
+    navigate('/account');
   };
 
   if (items.length === 0) {
@@ -80,11 +88,11 @@ export const Cart = () => {
                   exit={{ opacity: 0, x: 20 }}
                   className="ios-card p-6 flex flex-col sm:flex-row items-center gap-8 group"
                 >
-                  <div className="w-32 h-32 neu-inset overflow-hidden flex-shrink-0 p-2">
+                  <div className="w-32 h-32 neu-inset overflow-hidden flex-shrink-0 p-2 rounded-full">
                     <img
                       src={item.images[0]}
                       alt={item.name}
-                      className="w-full h-full object-cover rounded-[1.5rem] group-hover:scale-110 transition-transform duration-1000"
+                      className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-1000"
                       referrerPolicy="no-referrer"
                     />
                   </div>
@@ -153,6 +161,36 @@ export const Cart = () => {
                 <div className="flex justify-between text-2xl font-bold tracking-tight">
                   <span>Total</span>
                   <span className="text-ios-orange">{formatPrice(total * 1.08)}</span>
+                </div>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                <label className="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-1">Payment Method</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setPaymentMethod('cod')}
+                    className={cn(
+                      "p-4 rounded-2xl border transition-all flex flex-col items-center gap-2",
+                      paymentMethod === 'cod' 
+                        ? "neu-inset border-ios-orange/20 text-ios-orange" 
+                        : "bg-black/5 border-transparent opacity-60"
+                    )}
+                  >
+                    <Wallet size={20} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Cash on Delivery</span>
+                  </button>
+                  <button
+                    onClick={() => setPaymentMethod('card')}
+                    className={cn(
+                      "p-4 rounded-2xl border transition-all flex flex-col items-center gap-2",
+                      paymentMethod === 'card' 
+                        ? "neu-inset border-ios-orange/20 text-ios-orange" 
+                        : "bg-black/5 border-transparent opacity-60"
+                    )}
+                  >
+                    <CreditCard size={20} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Credit Card</span>
+                  </button>
                 </div>
               </div>
 
