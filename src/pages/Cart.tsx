@@ -40,9 +40,9 @@ export const Cart = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-32 h-32 rounded-full bg-white/5 flex items-center justify-center mb-8"
+          className="w-32 h-32 neu-button flex items-center justify-center mb-8"
         >
-          <ShoppingBag size={64} className="text-white/20" />
+          <ShoppingBag size={64} className="opacity-20" />
         </motion.div>
         <h1 className="text-4xl font-display font-bold mb-4">Your cart is empty</h1>
         <p className="text-white/50 mb-10 max-w-sm">
@@ -80,11 +80,11 @@ export const Cart = () => {
                   exit={{ opacity: 0, x: 20 }}
                   className="ios-card p-6 flex flex-col sm:flex-row items-center gap-8 group"
                 >
-                  <div className="w-32 h-32 rounded-[1.8rem] overflow-hidden bg-white/5 flex-shrink-0">
+                  <div className="w-32 h-32 neu-inset overflow-hidden flex-shrink-0 p-2">
                     <img
                       src={item.images[0]}
                       alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 saturate-[1.1]"
+                      className="w-full h-full object-cover rounded-[1.5rem] group-hover:scale-110 transition-transform duration-1000"
                       referrerPolicy="no-referrer"
                     />
                   </div>
@@ -101,17 +101,17 @@ export const Cart = () => {
                     </div>
 
                     <div className="flex flex-wrap items-center justify-center sm:justify-between gap-6">
-                      <div className="flex items-center gap-4 ios-glass p-1 rounded-full">
+                      <div className="flex items-center gap-4 neu-inset p-1 rounded-full">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors active:scale-90"
+                          className="w-8 h-8 neu-button flex items-center justify-center active:scale-90"
                         >
                           <Minus size={14} />
                         </button>
                         <span className="w-8 text-center font-bold text-sm">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors active:scale-90"
+                          className="w-8 h-8 neu-button flex items-center justify-center active:scale-90"
                         >
                           <Plus size={14} />
                         </button>

@@ -45,18 +45,18 @@ export const Account = () => {
         <div className="grid md:grid-cols-[300px_1fr] gap-12">
           {/* Sidebar */}
           <aside className="space-y-4">
-            <div className="glass-morphism p-8 rounded-[2.5rem] text-center">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-neon-cyan to-neon-blue flex items-center justify-center mx-auto mb-6">
-                <span className="text-black font-bold text-4xl">{user.email[0].toUpperCase()}</span>
+            <div className="neu-flat p-8 text-center">
+              <div className="w-24 h-24 neu-button flex items-center justify-center mx-auto mb-6">
+                <span className="text-ios-orange font-bold text-4xl">{user.email[0].toUpperCase()}</span>
               </div>
               <h2 className="text-xl font-bold mb-1">{user.email.split('@')[0]}</h2>
-              <p className="text-sm text-muted mb-6">{user.email}</p>
-              <span className="px-3 py-1 rounded-full bg-neon-cyan/10 text-neon-cyan text-[10px] font-bold uppercase tracking-widest border border-neon-cyan/20">
+              <p className="text-sm opacity-40 mb-6">{user.email}</p>
+              <span className="px-3 py-1 rounded-full bg-ios-orange/10 text-ios-orange text-[10px] font-bold uppercase tracking-widest border border-ios-orange/20">
                 {user.role}
               </span>
             </div>
 
-            <nav className="glass-morphism p-4 rounded-[2rem] space-y-2">
+            <nav className="neu-flat p-4 space-y-2">
               {[
                 { label: 'Profile', icon: User },
                 { label: 'Orders', icon: Package },
@@ -68,15 +68,15 @@ export const Account = () => {
                   className="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-white/5 transition-all text-sm font-medium group"
                 >
                   <div className="flex items-center gap-3">
-                    <item.icon size={18} className="text-neon-cyan" />
+                    <item.icon size={18} className="text-ios-orange" />
                     {item.label}
                   </div>
-                  <ChevronRight size={16} className="text-muted group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight size={16} className="opacity-40 group-hover:translate-x-1 transition-transform" />
                 </button>
               ))}
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-400 transition-all text-sm font-medium"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-500/10 text-red-500 transition-all text-sm font-medium"
               >
                 <LogOut size={18} />
                 Logout
@@ -86,44 +86,44 @@ export const Account = () => {
 
           {/* Main Content */}
           <main className="space-y-8">
-            <div className="glass-morphism p-8 rounded-[2.5rem]">
+            <div className="neu-flat p-8">
               <h3 className="text-xl font-bold mb-6">Personal Information</h3>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted">Full Name</label>
-                  <div className="glass-morphism px-4 py-3 rounded-xl text-sm font-medium">
+                  <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Full Name</label>
+                  <div className="neu-inset px-4 py-3 text-sm font-medium">
                     {user.email.split('@')[0]}
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-muted">Email Address</label>
-                  <div className="glass-morphism px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
-                    <Mail size={14} className="text-neon-cyan" />
+                  <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Email Address</label>
+                  <div className="neu-inset px-4 py-3 text-sm font-medium flex items-center gap-2">
+                    <Mail size={14} className="text-ios-orange" />
                     {user.email}
                   </div>
                 </div>
               </div>
-              <button className="mt-8 px-6 py-3 rounded-xl bg-white text-black font-bold text-sm hover:scale-105 transition-transform">
+              <button className="mt-8 ios-button-primary">
                 Update Profile
               </button>
             </div>
 
-            <div className="glass-morphism p-8 rounded-[2.5rem]">
+            <div className="neu-flat p-8">
               <h3 className="text-xl font-bold mb-6">Recent Orders</h3>
               <div className="text-center py-12">
-                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
-                  <Package size={32} className="text-muted" />
+                <div className="w-16 h-16 neu-button flex items-center justify-center mx-auto mb-4">
+                  <Package size={32} className="opacity-20" />
                 </div>
-                <p className="text-muted">You haven't placed any orders yet.</p>
+                <p className="opacity-40">You haven't placed any orders yet.</p>
                 <button 
                   onClick={() => navigate('/shop')}
-                  className="mt-4 text-neon-cyan font-bold hover:underline"
+                  className="mt-4 text-ios-orange font-bold hover:underline"
                 >
                   Start Shopping
                 </button>
               </div>
             </div>
-            <div className="ios-card p-8">
+            <div className="neu-flat p-8">
               <h3 className="text-xl font-bold mb-6 tracking-tight">Request a Product</h3>
               <p className="text-xs font-medium opacity-40 mb-8">Can't find what you're looking for? Let us know!</p>
               <form onSubmit={handleSubmitRequest} className="space-y-6">
@@ -134,7 +134,7 @@ export const Account = () => {
                     required
                     value={requestProduct}
                     onChange={(e) => setRequestProduct(e.target.value)}
-                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
+                    className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
                     placeholder="e.g. RTX 5090 FE"
                   />
                 </div>
@@ -144,7 +144,7 @@ export const Account = () => {
                     required
                     value={requestDesc}
                     onChange={(e) => setRequestDesc(e.target.value)}
-                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all h-24 resize-none"
+                    className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all h-24 resize-none"
                     placeholder="Tell us more about the product..."
                   />
                 </div>

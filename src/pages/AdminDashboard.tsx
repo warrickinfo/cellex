@@ -111,7 +111,7 @@ export const AdminDashboard = () => {
               transition={{ delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="ios-card p-8 relative overflow-hidden group"
             >
-              <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center mb-6 bg-white/5", stat.color)}>
+              <div className={cn("w-12 h-12 neu-button flex items-center justify-center mb-6", stat.color)}>
                 <stat.icon size={24} />
               </div>
               <div className="text-3xl font-display font-bold mb-1 tracking-tight">{stat.value}</div>
@@ -181,7 +181,7 @@ export const AdminDashboard = () => {
               <div className="space-y-6">
                 {products.slice(0, 4).map((product) => (
                   <div key={product.id} className="flex items-center gap-4 group cursor-pointer">
-                    <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/5 flex-shrink-0">
+                    <div className="w-16 h-16 neu-inset overflow-hidden flex-shrink-0">
                       <img src={product.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -326,7 +326,7 @@ export const AdminDashboard = () => {
                     required
                     value={newProduct.name}
                     onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
+                    className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
                   />
                 </div>
                 <div className="space-y-2">
@@ -336,7 +336,7 @@ export const AdminDashboard = () => {
                     required
                     value={newProduct.price}
                     onChange={(e) => setNewProduct({...newProduct, price: Number(e.target.value)})}
-                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
+                    className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
                   />
                 </div>
               </div>
@@ -346,7 +346,7 @@ export const AdminDashboard = () => {
                   <select 
                     value={newProduct.category}
                     onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all appearance-none"
+                    className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all appearance-none"
                   >
                     <option value="Smartphones">Smartphones</option>
                     <option value="Laptops">Laptops</option>
@@ -362,7 +362,7 @@ export const AdminDashboard = () => {
                     required
                     value={newProduct.brand}
                     onChange={(e) => setNewProduct({...newProduct, brand: e.target.value})}
-                    className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
+                    className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all"
                   />
                 </div>
               </div>
@@ -372,7 +372,7 @@ export const AdminDashboard = () => {
                   required
                   value={newProduct.description}
                   onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                  className="w-full bg-white/5 border border-[var(--glass-border)] rounded-2xl px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all h-24 resize-none"
+                  className="w-full neu-inset px-4 py-3 text-sm outline-none focus:border-ios-orange/50 transition-all h-24 resize-none"
                 />
               </div>
               <div className="flex gap-4 pt-4">

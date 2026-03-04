@@ -36,7 +36,7 @@ export const Shop = () => {
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="ios-glass rounded-full flex items-center px-6 py-3 w-full md:w-80 group focus-within:ring-2 ring-ios-orange/20 transition-all">
+            <div className="neu-inset flex items-center px-6 py-3 w-full md:w-80 group focus-within:ring-2 ring-ios-orange/20 transition-all">
               <Search size={18} className="opacity-30 group-focus-within:opacity-100 group-focus-within:text-ios-orange" />
               <input
                 type="text"
@@ -46,7 +46,7 @@ export const Shop = () => {
                 className="bg-transparent border-none outline-none px-3 py-1 text-sm w-full font-medium"
               />
             </div>
-            <button className="ios-glass p-3 rounded-full hover:bg-white/10 transition-colors md:hidden">
+            <button className="neu-button p-3 md:hidden">
               <Filter size={20} />
             </button>
           </div>
@@ -107,26 +107,26 @@ export const Shop = () => {
           {/* Product Grid */}
           <main>
             {/* Toolbar */}
-            <div className="flex items-center justify-between mb-10 ios-glass p-4 rounded-full px-8">
+            <div className="flex items-center justify-between mb-10 neu-flat p-4 rounded-full px-8">
               <div className="text-xs font-bold opacity-40 uppercase tracking-widest">
                 <span className="opacity-100 text-[var(--foreground)]">{filteredProducts.length}</span> results
               </div>
               <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10">
+                <div className="flex items-center gap-2 neu-inset p-1 rounded-full">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={cn("p-2 rounded-full transition-all", viewMode === 'grid' ? "bg-white text-black shadow-sm" : "opacity-40 hover:opacity-100")}
+                    className={cn("p-2 rounded-full transition-all", viewMode === 'grid' ? "neu-button text-ios-orange" : "opacity-40 hover:opacity-100")}
                   >
                     <Grid size={16} />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={cn("p-2 rounded-full transition-all", viewMode === 'list' ? "bg-white text-black shadow-sm" : "opacity-40 hover:opacity-100")}
+                    className={cn("p-2 rounded-full transition-all", viewMode === 'list' ? "neu-button text-ios-orange" : "opacity-40 hover:opacity-100")}
                   >
                     <List size={16} />
                   </button>
                 </div>
-                <button className="flex items-center gap-2 px-5 py-2 ios-glass rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+                <button className="flex items-center gap-2 px-5 py-2 neu-button text-xs font-bold uppercase tracking-widest">
                   Sort
                   <ChevronDown size={14} />
                 </button>

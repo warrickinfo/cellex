@@ -1,193 +1,239 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ChevronRight, Zap, Shield, Globe, Smartphone, Laptop, Headphones } from 'lucide-react';
+import { Zap, Search, User, ArrowRight, Cloud, ChevronLeft, ChevronRight, ShoppingCart, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ProductCard } from '../components/ProductCard';
-import { useProductStore } from '../store';
-import { cn } from '../lib/utils';
+import { useProductStore, useCartStore } from '../store';
+import { formatPrice, cn } from '../lib/utils';
+import { toast } from 'sonner';
 
 export const Home = () => {
   const { products } = useProductStore();
+  const { addItem } = useCartStore();
+  
+  const featuredProducts = products.slice(0, 4);
+
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+    toast.success(`${product.name} added to cart!`, {
+      style: {
+        background: 'var(--card-bg)',
+        border: '1px solid var(--glass-border)',
+        color: 'var(--foreground)',
+      }
+    });
+  };
+
   return (
-    <div className="relative min-h-screen">
-      {/* Background Glows */}
-      <div className="bg-glow top-[-10%] left-[-10%] bg-[#ff6b00]/10" />
-      <div className="bg-glow bottom-[-10%] right-[-10%] bg-[#cc5500]/10" />
-
-      {/* Hero Section */}
-      <section className="pt-40 pb-20 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Hero content removed */}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-24 relative max-w-5xl mx-auto"
-          >
-            <div className="relative z-10 ios-card overflow-hidden aspect-[16/9]">
-              <img
-                src="https://picsum.photos/seed/ios26/1600/900"
-                alt="Hero Gadget"
-                className="w-full h-full object-cover saturate-[1.2] hover:scale-105 transition-transform duration-1000"
-                referrerPolicy="no-referrer"
+    <div className="min-h-screen pt-24 pb-20 px-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Top Navigation Bar (Neumorphic) */}
+        <div className="neu-flat p-4 mb-8 flex items-center justify-between px-8">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="w-10 h-10 neu-button flex items-center justify-center">
+              <Zap size={18} className="text-ios-orange" />
+            </Link>
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium opacity-60">
+              <Link to="/shop" className="hover:opacity-100 transition-opacity">Shop All</Link>
+              <Link to="/shop?category=Smartphones" className="hover:opacity-100 transition-opacity">Smartphones</Link>
+              <Link to="/shop?category=Laptops" className="hover:opacity-100 transition-opacity">Laptops</Link>
+            </nav>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <div className="neu-inset px-6 py-2 flex items-center gap-3 w-64">
+              <Search size={16} className="opacity-40" />
+              <input 
+                type="text" 
+                placeholder="Search products..." 
+                className="bg-transparent border-none outline-none text-sm w-full opacity-60"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-              
-              {/* Floating Widgets */}
-              <div className="absolute top-8 right-8 ios-glass p-6 rounded-[2rem] animate-ios-float">
-                <Smartphone className="text-ios-orange mb-2" size={24} />
-                <div className="text-sm font-bold">iPhone 26 Pro</div>
-                <div className="text-[10px] opacity-40 uppercase tracking-widest">Neural Link Ready</div>
-              </div>
             </div>
-            {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-ios-orange/10 blur-[150px] -z-10" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <h2 className="text-5xl font-display font-bold mb-4 tracking-tight">Categories</h2>
-              <p className="text-[var(--text-secondary)] font-medium">Browse our curated collections</p>
-            </div>
-            <Link to="/shop" className="ios-button-secondary text-sm">
-              View All
+            <Link to="/account" className="w-10 h-10 neu-button flex items-center justify-center">
+              <User size={18} className="opacity-60" />
             </Link>
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { name: 'Smartphones', icon: Smartphone, color: 'bg-ios-orange/10' },
-              { name: 'Laptops', icon: Laptop, color: 'bg-blue-500/10' },
-              { name: 'Audio', icon: Headphones, color: 'bg-purple-500/10' },
-              { name: 'Wearables', icon: Zap, color: 'bg-emerald-500/10' },
-            ].map((cat) => (
-              <Link key={cat.name} to={`/shop?category=${cat.name}`}>
-                <motion.div
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  className={cn(
-                    "ios-card p-10 flex flex-col items-center justify-center gap-6 text-center group",
-                    cat.color
-                  )}
-                >
-                  <div className="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                    <cat.icon size={40} className="text-ios-orange" />
-                  </div>
-                  <span className="text-xl font-bold tracking-tight">{cat.name}</span>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
         </div>
-      </section>
 
-      {/* Featured Products */}
-      <section className="py-20 px-6 bg-white/[0.02]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-display font-bold mb-6">FEATURED PRODUCTS</h2>
-            <p className="text-white/50 max-w-2xl mx-auto">
-              Our handpicked selection of the most innovative gadgets on the market.
-              Engineered for excellence, designed for you.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.slice(0, 3).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-          {[
-            { icon: Shield, title: 'Secure Payments', desc: 'Encrypted transactions with iOS level security.' },
-            { icon: Globe, title: 'Global Shipping', desc: 'Fast delivery to over 150 countries worldwide.' },
-            { icon: Zap, title: 'Instant Support', desc: '24/7 technical assistance for all your devices.' },
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              className="glass-morphism p-10 rounded-[2.5rem] text-center"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-6">
-                <feature.icon size={32} className="text-neon-cyan" />
-              </div>
-              <h3 className="text-xl font-bold mb-4">{feature.title}</h3>
-              <p className="text-white/50 leading-relaxed">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-20 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
-          <div className="col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff6b00] to-[#cc5500] flex items-center justify-center">
-                <span className="text-black font-bold text-xl">C</span>
-              </div>
-              <span className="text-2xl font-display font-bold tracking-tighter">CELLEX</span>
-            </Link>
-            <p className="text-white/40 max-w-sm mb-8">
-              The ultimate destination for premium gadgets. Experience the future of 
-              technology with our curated collection of high-end devices.
-            </p>
-            <div className="flex gap-4">
-              {/* Social Icons Placeholder */}
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-neon-cyan hover:text-black transition-all cursor-pointer">
-                  <Globe size={18} />
+        {/* Main Bento Grid */}
+        <div className="grid lg:grid-cols-[400px_1fr] gap-8 mb-12">
+          {/* Left Column */}
+          <div className="space-y-8">
+            {/* Hero Promo Card */}
+            <div className="neu-flat p-10 relative overflow-hidden h-full flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 neu-button flex items-center justify-center mb-6">
+                  <Zap size={20} className="text-ios-orange" />
                 </div>
-              ))}
+                <h2 className="text-4xl font-display font-bold tracking-tighter mb-4">Premium<br />Tech Only.</h2>
+                <p className="opacity-60 text-sm leading-relaxed max-w-[200px]">
+                  Curated selection of the world's most advanced gadgets.
+                </p>
+              </div>
+              
+              <div className="mt-12">
+                <Link to="/shop" className="ios-button-primary inline-flex items-center gap-2">
+                  Shop Now <ArrowRight size={18} />
+                </Link>
+              </div>
             </div>
           </div>
-          <div>
-            <h4 className="font-bold mb-6">Quick Links</h4>
-            <ul className="space-y-4 text-white/40">
-              <li><Link to="/shop" className="hover:text-neon-cyan transition-colors">Shop All</Link></li>
-              <li><Link to="/shop?category=Smartphones" className="hover:text-neon-cyan transition-colors">Smartphones</Link></li>
-              <li><Link to="/shop?category=Laptops" className="hover:text-neon-cyan transition-colors">Laptops</Link></li>
-              <li><Link to="/cart" className="hover:text-neon-cyan transition-colors">My Cart</Link></li>
-              <li><Link to="/admin/login" className="hover:text-neon-cyan transition-colors">Admin Portal</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold mb-6">Support</h4>
-            <ul className="space-y-4 text-white/40">
-              <li><Link to="#" className="hover:text-neon-cyan transition-colors">Help Center</Link></li>
-              <li><Link to="#" className="hover:text-neon-cyan transition-colors">Order Status</Link></li>
-              <li><Link to="#" className="hover:text-neon-cyan transition-colors">Returns</Link></li>
-              <li><Link to="#" className="hover:text-neon-cyan transition-colors">Contact Us</Link></li>
-            </ul>
+
+          {/* Right Column - Hero */}
+          <div className="neu-flat p-12 flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
+            <div className="flex-1 z-10">
+              <span className="text-ios-orange font-bold text-xs uppercase tracking-[0.3em] mb-4 block">New Arrival</span>
+              <h1 className="text-7xl font-display font-bold tracking-tighter mb-6 leading-none">iPhone 15 Pro</h1>
+              <p className="text-xl opacity-60 max-w-sm leading-relaxed mb-8">
+                Titanium design. A17 Pro chip. A monster for gaming.
+              </p>
+              <div className="flex gap-4">
+                <Link to="/product/iphone-15-pro" className="ios-button-primary">
+                  Pre-order
+                </Link>
+                <div className="w-12 h-12 neu-button flex items-center justify-center">
+                  <ChevronRight size={20} className="opacity-40" />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 flex items-center justify-center relative">
+              <motion.div 
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="relative w-full max-w-sm aspect-square"
+              >
+                <img 
+                  src="https://picsum.photos/seed/iphone/800/800" 
+                  alt="Featured Product" 
+                  className="w-full h-full object-contain drop-shadow-2xl"
+                  referrerPolicy="no-referrer"
+                />
+              </motion.div>
+              {/* Floating Badge */}
+              <div className="absolute top-0 right-0 neu-button p-4 flex flex-col items-center">
+                <span className="text-[10px] font-bold opacity-40 uppercase">From</span>
+                <span className="text-xl font-display font-bold text-ios-orange">৳1,20,000</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-sm">
-          <p>© 2026 Cellex Premium Store. All rights reserved.</p>
-          <div className="flex gap-8">
-            <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
+
+        {/* Featured Products Section */}
+        <div className="space-y-8">
+          <div className="flex items-center justify-between px-4">
+            <h2 className="text-3xl font-display font-bold tracking-tight">Featured <span className="text-ios-orange">Products</span></h2>
+            <Link to="/shop" className="text-sm font-bold opacity-40 hover:opacity-100 transition-opacity flex items-center gap-2">
+              View All <ChevronRight size={16} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuredProducts.map((product) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="group relative"
+              >
+                <Link to={`/product/${product.id}`} className="block">
+                  <div className="neu-flat p-6 h-full flex flex-col">
+                    <div className="relative aspect-square rounded-[1.8rem] overflow-hidden neu-inset mb-6 p-4">
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full ios-glass text-[9px] font-bold uppercase tracking-widest opacity-80">
+                        {product.category}
+                      </div>
+                    </div>
+
+                    <div className="flex-1 flex flex-col">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">{product.brand}</span>
+                        <div className="flex items-center gap-1 opacity-60">
+                          <Star size={10} className="text-ios-gold fill-ios-gold" />
+                          <span className="text-[10px] font-bold">4.9</span>
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-lg font-bold mb-3 group-hover:text-ios-orange transition-colors line-clamp-1 tracking-tight">
+                        {product.name}
+                      </h3>
+                      
+                      <div className="mt-auto flex items-center justify-between">
+                        <span className="text-xl font-display font-bold text-ios-orange">
+                          {formatPrice(product.price)}
+                        </span>
+                        <motion.button 
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={(e) => handleAddToCart(product, e)}
+                          className="w-10 h-10 neu-button flex items-center justify-center hover:text-ios-orange transition-all duration-300"
+                        >
+                          <ShoppingCart size={16} />
+                        </motion.button>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </footer>
+
+        {/* Category Bento Section */}
+        <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <div className="neu-flat p-8 flex flex-col justify-between group cursor-pointer overflow-hidden relative">
+            <div className="z-10">
+              <h3 className="text-2xl font-display font-bold mb-2">Smartphones</h3>
+              <p className="text-sm opacity-60">The latest flagships.</p>
+            </div>
+            <div className="mt-8 z-10">
+              <Link to="/shop?category=Smartphones" className="w-10 h-10 neu-button flex items-center justify-center group-hover:bg-ios-orange group-hover:text-white transition-all">
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+            <div className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 group-hover:opacity-20 transition-opacity rotate-12">
+              <Zap size={128} />
+            </div>
+          </div>
+
+          <div className="neu-flat p-8 flex flex-col justify-between group cursor-pointer overflow-hidden relative">
+            <div className="z-10">
+              <h3 className="text-2xl font-display font-bold mb-2">Laptops</h3>
+              <p className="text-sm opacity-60">Power for creators.</p>
+            </div>
+            <div className="mt-8 z-10">
+              <Link to="/shop?category=Laptops" className="w-10 h-10 neu-button flex items-center justify-center group-hover:bg-ios-orange group-hover:text-white transition-all">
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+            <div className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 group-hover:opacity-20 transition-opacity -rotate-12">
+              <Cloud size={128} />
+            </div>
+          </div>
+
+          <div className="neu-flat p-8 flex flex-col justify-between group cursor-pointer overflow-hidden relative">
+            <div className="z-10">
+              <h3 className="text-2xl font-display font-bold mb-2">Audio</h3>
+              <p className="text-sm opacity-60">Immersive sound.</p>
+            </div>
+            <div className="mt-8 z-10">
+              <Link to="/shop?category=Audio" className="w-10 h-10 neu-button flex items-center justify-center group-hover:bg-ios-orange group-hover:text-white transition-all">
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+            <div className="absolute -right-4 -bottom-4 w-32 h-32 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Zap size={128} className="text-ios-gold" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

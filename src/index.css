@@ -26,21 +26,25 @@
 
 @layer base {
   :root {
-    --background: #fbfbfd;
-    --foreground: #1d1d1f;
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(0, 0, 0, 0.05);
-    --card-bg: #ffffff;
-    --text-secondary: rgba(0, 0, 0, 0.5);
+    --background: #e0e5ec;
+    --foreground: #44475a;
+    --glass-bg: rgba(224, 229, 236, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --card-bg: #e0e5ec;
+    --text-secondary: rgba(68, 71, 90, 0.6);
+    --neu-shadow-dark: #a3b1c6;
+    --neu-shadow-light: #ffffff;
   }
 
   .dark {
-    --background: #000000;
-    --foreground: #f5f5f7;
-    --glass-bg: rgba(20, 20, 20, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --card-bg: #161617;
-    --text-secondary: rgba(255, 255, 255, 0.5);
+    --background: #1a1a1a;
+    --foreground: #e0e0e0;
+    --glass-bg: rgba(26, 26, 26, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --card-bg: #1a1a1a;
+    --text-secondary: rgba(224, 224, 224, 0.6);
+    --neu-shadow-dark: #000000;
+    --neu-shadow-light: #2a2a2a;
   }
 
   body {
@@ -51,16 +55,36 @@
 }
 
 @layer utilities {
+  .neu-flat {
+    background: var(--card-bg);
+    box-shadow: 9px 9px 16px var(--neu-shadow-dark), 
+                -9px -9px 16px var(--neu-shadow-light);
+    @apply rounded-[2.5rem];
+  }
+
+  .neu-inset {
+    background: var(--card-bg);
+    box-shadow: inset 6px 6px 12px var(--neu-shadow-dark), 
+                inset -6px -6px 12px var(--neu-shadow-light);
+    @apply rounded-[2.5rem];
+  }
+
+  .neu-button {
+    background: var(--card-bg);
+    box-shadow: 6px 6px 12px var(--neu-shadow-dark), 
+                -6px -6px 12px var(--neu-shadow-light);
+    @apply rounded-full transition-all duration-300 active:shadow-[inset_4px_4px_8px_var(--neu-shadow-dark),inset_-4px_-4px_8px_var(--neu-shadow-light)];
+  }
+
   .ios-glass {
     @apply backdrop-blur-[30px] saturate-[1.8] bg-[var(--glass-bg)] border border-[var(--glass-border)];
   }
   
   .ios-card {
-    @apply bg-[var(--card-bg)] rounded-[2.5rem] border border-[var(--glass-border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500;
-  }
-
-  .dark .ios-card {
-    @apply shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.4)];
+    background: var(--card-bg);
+    box-shadow: 9px 9px 16px var(--neu-shadow-dark), 
+                -9px -9px 16px var(--neu-shadow-light);
+    @apply rounded-[2.5rem] border border-white/20 transition-all duration-500;
   }
 
   .text-gradient {
@@ -68,11 +92,17 @@
   }
 
   .ios-button-primary {
-    @apply rounded-full px-6 py-3 font-semibold transition-all duration-300 active:scale-95 disabled:opacity-50 bg-ios-orange text-white shadow-[0_4px_14px_0_rgba(255,107,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,107,0,0.23)] hover:bg-[#ff7b1a];
+    background: var(--card-bg);
+    box-shadow: 6px 6px 12px var(--neu-shadow-dark), 
+                -6px -6px 12px var(--neu-shadow-light);
+    @apply rounded-full transition-all duration-300 active:shadow-[inset_4px_4px_8px_var(--neu-shadow-dark),inset_-4px_-4px_8px_var(--neu-shadow-light)] px-6 py-3 font-semibold text-ios-orange hover:text-ios-gold;
   }
 
   .ios-button-secondary {
-    @apply rounded-full px-6 py-3 font-semibold transition-all duration-300 active:scale-95 disabled:opacity-50 bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20;
+    background: var(--card-bg);
+    box-shadow: 6px 6px 12px var(--neu-shadow-dark), 
+                -6px -6px 12px var(--neu-shadow-light);
+    @apply rounded-full transition-all duration-300 active:shadow-[inset_4px_4px_8px_var(--neu-shadow-dark),inset_-4px_-4px_8px_var(--neu-shadow-light)] px-6 py-3 font-semibold opacity-70 hover:opacity-100;
   }
 }
 

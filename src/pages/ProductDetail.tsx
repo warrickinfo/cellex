@@ -46,7 +46,7 @@ export const ProductDetail = () => {
         {/* Back Button */}
         <button 
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-white/50 hover:text-white mb-12 transition-colors group"
+          className="flex items-center gap-2 opacity-50 hover:opacity-100 mb-12 transition-opacity group"
         >
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to results
@@ -58,7 +58,7 @@ export const ProductDetail = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="aspect-square rounded-[3rem] overflow-hidden glass-morphism p-4"
+              className="aspect-square neu-flat p-4"
             >
               <img
                 src={product.images[selectedImage]}
@@ -74,11 +74,11 @@ export const ProductDetail = () => {
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={cn(
-                    "aspect-square rounded-2xl overflow-hidden glass-morphism p-1 transition-all",
-                    selectedImage === i ? "border-neon-cyan border-2" : "opacity-50 hover:opacity-100"
+                    "aspect-square neu-button p-1 transition-all",
+                    selectedImage === i ? "ring-2 ring-ios-orange" : "opacity-50 hover:opacity-100"
                   )}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover rounded-xl" referrerPolicy="no-referrer" />
+                  <img src={img} alt="" className="w-full h-full object-cover rounded-full" referrerPolicy="no-referrer" />
                 </button>
               ))}
             </div>
@@ -112,8 +112,8 @@ export const ProductDetail = () => {
             {/* Specs Grid */}
             <div className="grid grid-cols-2 gap-4 mb-10">
               {Object.entries(product.specs).map(([key, value]) => (
-                <div key={key} className="glass-morphism p-4 rounded-2xl">
-                  <div className="text-[10px] uppercase tracking-widest text-white/30 mb-1">{key}</div>
+                <div key={key} className="neu-flat p-4">
+                  <div className="text-[10px] uppercase tracking-widest opacity-30 mb-1">{key}</div>
                   <div className="text-sm font-bold">{value}</div>
                 </div>
               ))}
@@ -122,17 +122,17 @@ export const ProductDetail = () => {
             {/* Actions */}
             <div className="mt-auto space-y-6">
               <div className="flex items-center gap-6">
-                <div className="flex items-center gap-4 bg-white/5 p-1 rounded-2xl border border-white/10">
+                <div className="flex items-center gap-4 neu-inset p-1 rounded-2xl">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 neu-button flex items-center justify-center"
                   >
                     -
                   </button>
                   <span className="w-8 text-center font-bold text-lg">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 neu-button flex items-center justify-center"
                   >
                     +
                   </button>
@@ -142,7 +142,7 @@ export const ProductDetail = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleAddToCart}
-                  className="flex-1 py-5 rounded-2xl bg-white text-black font-bold flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                  className="flex-1 py-5 rounded-2xl ios-button-primary flex items-center justify-center gap-3"
                 >
                   <ShoppingCart size={20} />
                   Add to Cart
